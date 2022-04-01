@@ -15,9 +15,39 @@ class MusicCollection {
                 new Song("The Unforgiven", 348, "Metallica", Song.Genre.METAL),
                 new Song("Girl on Fire", 404, "Alicia Keys", Song.Genre.POP)
         );
+
+       timeOfGenreSongs(songs,"METAL");
+       numberOfArtistSong(songs,"Metallica");
+       songsWithoutGenre(songs,"METAL");
     }
 
-    
+    private static void songsWithoutGenre (List<Song> songs, String genre){
+        System.out.println("Piosenki bez gatunku " + genre);
+        songs.stream()
+                .filter(s -> !checkGenre(s,genre))
+                .distinct()
+                .forEach(System.out::println);
+    }
 
+    private static void numberOfArtistSong (List<Song> songs, String artist){
+        long count = songs.stream()
+                .filter(s -> s.getArtist().equals(artist))
+                .count();
+        System.out.println("Ilość piosenek artysty " + artist + " to " + count);
+
+    }
+
+private static void timeOfGenreSongs (List<Song> list, String genre){
+    int sum = list.stream()
+            .filter(s -> checkGenre(s, genre))
+            .mapToInt(Song::getLength)
+            .sum();
+    System.out.println("Łączna długość wszyskich piosenek gatunku " + genre + " to " + sum + " sekund");
+}
+
+private static boolean checkGenre(Song song, String genre){
+    String name = song.getGenre().name();
+    return name.equals(genre);
+}
 
 }
